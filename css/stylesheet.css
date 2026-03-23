@@ -1,0 +1,17 @@
+body {
+    background-color: #000;
+}
+
+h1 {
+    text-align: center;
+    color: #fff;
+    font-family: Verdana, sans-serif;
+    font-weight: bold;
+}
+
+#canvas {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
