@@ -26,6 +26,8 @@ class Particle {
     static lightnessVariance = 5;
     static hueVariance = 10;
     static riseSpeedVariance = 1;
+    static minLightness = -50;
+    static maxLightness = 50;
 
     posX = (Math.random() * screenWidth);
     posY = screenHeight;
@@ -43,8 +45,8 @@ class Particle {
 
     static updateColour() {
         Particle.colour.hue += (Particle.hueShift * (Math.random() - 0.5) * Particle.hueVariance);
-        if (Particle.colour.lightness > 50) {Particle.colour.lightness = 50};
-        if (Particle.colour.lightness < -50) {Particle.colour.lightness = -50};
+        if (Particle.colour.lightness > maxLightness) {Particle.colour.lightness = maxLightness};
+        if (Particle.colour.lightness < minLightness) {Particle.colour.lightness = minLightness};
         Particle.colour.lightness += (Math.random() - 0.5) * Particle.lightnessVariance;
     }
 
