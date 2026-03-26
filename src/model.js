@@ -20,13 +20,15 @@ class ColourHandler {
 }
 
 export default class ParticleGenerator {
-    static allParticles = [];
     static hue = 0;
     static saturation = 100;
     static lightness = 50;
 
     constructor(pos) {
         this.pos = pos;
+
+        // Once a generator has branched itself, it has a chance to die
+        this.hasReproduced = false;
     }
 
     generateParticle(size = 20, hue = ParticleGenerator.hue, saturation = ParticleGenerator.saturation, lightness = ParticleGenerator.lightness) {
@@ -52,6 +54,10 @@ export default class ParticleGenerator {
 
     updateColour(hueChange, hueVariance) {
         ParticleGenerator.hue = ColourHandler.updateHue(ParticleGenerator.hue, hueChange, hueVariance);
+    }
+
+    checkDeath(chance, percentageMultiplier) {
+        return (Math.random() <= (chance / percentageMultiplier));
     }
 }
 
@@ -88,5 +94,31 @@ export class Vector {
     constructor(x = 0, y = 0) {
         this.x = x;
         this.y = y;
+    }
+}
+
+export class Utils {
+    static testLightness(maxParticles, maxParticleGenerators, newParticleGeneratorsPerFrame, initialLightness, minLightness, lightnessChange) {
+        const framesToTerminate = ((initialLightness - minLightness) / lightnessChange); 
+        let framesToMaxParticles = 0;
+        let result = 0;
+        let generators = newParticleGeneratorsPerFrame;
+        do {
+            framesToMaxParticles += 1;
+            result += (generators);
+            if (generators < maxParticleGenerators) {
+                generators += newParticleGeneratorsPerFrame;
+                if (generators > maxParticleGenerators) {
+                    generators = maxParticleGenerators;
+                }
+            }
+        } while (result <= maxParticles);
+    
+        console.log(`Frames to termination: ${framesToTerminate}`);
+        console.log(`Frames to max particle count: ${framesToMaxParticles}`);
+    
+        if (framesToMaxParticles < framesToTerminate) {
+            throw new Error("Particle count will cap before old particles are delete!");
+        }
     }
 }
