@@ -5,22 +5,32 @@ import { Utils } from './model.js';
 
 // Assigns the canvas element to the ctx attribute
 // Also establishs both the screen width and height, with an allowance made for the windows taskbar
-const canvas = document.getElementById("canvas");
+const canvas = document.getElementById("particle-canvas");
 const ctx = canvas.getContext("2d");
 const taskBarHeight = 48;
 const screenWidth = screen.width;
 const screenHeight = screen.height - taskBarHeight;
-
 canvas.width = screenWidth;
 canvas.height = screenHeight;
 
 // Establishs the framerate
 const frameRate = 24;
-setInterval(() => draw(), 1000/frameRate)
+
+const img = new Image();
+
+if (img) {
+    img.onload = function() {
+        setInterval(() => draw(), 1000/frameRate)
+    }
+} else {
+    setInterval(() => draw(), 1000/frameRate);
+}
+
+img.src = '../assets/brickwork.png';
 
 // Max particles to prevent excessive memory use
 const maxParticles = 25000;
-const maxParticleGenerators = 100;
+const maxParticleGenerators = 50;
 const newParticleGeneratorsPerFrame = 1;
 const allGenerators = [];
 const allParticles = [];
@@ -32,11 +42,12 @@ const view = new View(ctx, screenWidth, screenHeight);
 // VFX attributes //
 ////////////////////
 
+// Specifies that a bg image should be used
+const bgImg = false;
+const bgImgAlpha = 0.9;
+
 // Enables branching generator creation
 let branching = false;
-
-// Flag to manually create first branching generator
-let firstBranch = false;
 
 // Used to make percentages more readable
 const percentageMultiplier = 100;
@@ -45,8 +56,9 @@ const percentageMultiplier = 100;
 let branchChance = 2;
 // Chance that a particle generator will terminate itself
 // Must have reproduced at least once before
-let deathChance = 10;
+let deathChance = 5;
 
+// General Particle variables
 let particleSize = 7;
 let verticalSpeed = 3;
 let horizontalSpeed = 4;
@@ -67,9 +79,18 @@ let minLightness = 0;
 // Used to confirm old particles will be deleted before new particles are created
 Utils.testLightness(maxParticles, maxParticleGenerators, newParticleGeneratorsPerFrame, initialLightness, minLightness, lightnessChange);
 
+// Flag to manually create first branching generator
+// Should not be manually changed
+let firstBranch = false;
+
 // Main rendering loop
 function draw() {
-    view.drawBackground();
+
+    if (bgImg && img) {
+        view.drawBackground(img, img.width, img.height, bgImgAlpha);
+    } else {
+        view.drawBackground();
+    }
 
     if (branching === true) {
         if (firstBranch === true) {

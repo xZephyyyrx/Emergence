@@ -1,8 +1,9 @@
 body {
     background-color: #000;
+    margin: 0;
 }
 
-#canvas {
+canvas {
     display: block;
     position: absolute;
     top: 0;

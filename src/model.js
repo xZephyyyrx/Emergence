@@ -88,6 +88,15 @@ class Particle {
         }
         return result;
     }
+
+    checkIsNearby(x, y, imgWidth, imgHeight, variance) {
+        if (this.pos.x > x - variance && 
+            this.pos.x < (x + imgWidth) + variance &&
+            this.pos.y > y - variance && 
+            this.pos.y < (y + imgHeight) + variance) {
+            return this.colour.lightness;
+        }
+    }
 }
 
 export class Vector {
