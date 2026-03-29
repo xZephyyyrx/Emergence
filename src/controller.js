@@ -20,7 +20,12 @@ const img = new Image();
 
 if (img) {
     img.onload = function() {
+        console.log("image successfully loaded")
         setInterval(() => draw(), 1000/frameRate)
+    }
+
+    img.onerror = function() {
+        console.log("image failed to load")
     }
 } else {
     setInterval(() => draw(), 1000/frameRate);
