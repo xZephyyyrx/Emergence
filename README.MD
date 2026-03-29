@@ -1,5 +1,12 @@
 To-do:
 
-Tiles should be their own objects within the Model
--This will allow them to be update only when they need to be
--Tiles should also be at max 16x16 for smoother motion
+Figure out how to make dynamic lighting...
+
+Possible option...
+1. Render backdrop on lowest z-level canvas
+2. Draw a semi-transparent black layer on the next z-level canvas
+3. Use a gradient clearRect() at particle position to clear black layer on this canvas?
+
+Need to look into whether clearRect applies to only its own canvas or all layers
+
+much to consirder,...
